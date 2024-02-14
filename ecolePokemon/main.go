@@ -52,10 +52,6 @@ type Pokemon struct {
 	// Add other fields like capacities, types, and evolutions as necessary
 }
 
-type PokemonList struct {
-	Results []Pokemon `json:"results"`
-}
-
 func main() {
 
 	r := mux.NewRouter()
