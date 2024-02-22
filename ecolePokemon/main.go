@@ -132,4 +132,5 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
 		errorHandler(w, "Failed to execute template.")
 		return
 	}
+
 }
