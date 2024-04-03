@@ -46,7 +46,7 @@ func DatesToPokemons(search string, pokemonList []Pokemon) []Pokemon {
 		isDate = false
 		datesList := GetDates(pokemon)
 		for _, pokemonDates := range datesList {
-			if strings.Contains(strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(pokemonDates, "-", " ")"_", " ")), strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(search, "-", " "), "_", " ")))) {
+			if strings.Contains(strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(pokemonDates, "-", " ")"_", " ")), strings.ToLower(strings.ReplaceAll(strings.ReplaceAll(search, "-", " "), "_", " "))) {
                 isDate = true
             }
 		}
