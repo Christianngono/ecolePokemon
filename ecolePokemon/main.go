@@ -18,6 +18,7 @@ type Pokemon struct {
 	DatesLink      string  `json:"url"`
 	EvolutionsLink string  `json:"urlEvolution"`
 	GenerationLink string  `json:"urlGeneration"`
+	LanguagesLink  string  `json:"urlLanguages"`
 	Height         float64 `json:"height"`
 	Weight         float64 `json:"weight"`
 	BaseExperience int     `json:"base_experience"`
@@ -97,12 +98,14 @@ type Language struct {
 	PokemonList []Pokemon `json:"pokemonList"`
 	LanguageID  string    `json:"language"`
 	Language    string    `json:"language"`
+	UrlLanguages string    `json:"urlLanguages"`
 }
 
 const (
 	url            = "https://pokeapi.co/api/v2/pokemon/ditto"
 	urlEvolution   = "https://pokeapi.co/api/v2/evolution-chain/{id}/"
 	urlGenerations = "https://pokeapi.co/api/v2/generation/{id or name}/"
+	urlLanguages   = "https://pokeapi.co/api/v2/language/{id or name}/"
 
 	maplink = "https://pokeapi.co/api/v2/location/{id or name}/"
 )
