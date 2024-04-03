@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location</title>
+    <link rel="stylesheet" href="/static/css/location.css">
+</head>
+<body>
+    <header>
+        <a class="image" href="/"><img src="/static/image/ecole_Pokémon.png" alt="logo"></a>
+    </header>
+    <!----------Navigation----------->
+    <nav>
+        <form class="search-form" action="" method="post">
+            <input class="search" type="text" placeholder="Search" name="search">
+            <select class="sort" name="sort">
+                <option value="" selected>None</option>
+                <optgroup label="Artists:">
+                    <option value="A > Z">A > Z</option>
+                    <option value="Z > A">Z > A</option>
+                </optgroup>
+                <optgroup label="Creation date:">
+                    <option value="Old > New">Old > New</un>
+                    <option value="New > Old">New > Old</un>
+                </optgroup>
+            </select>
+            <button class="submit" type="submit">Enter</button>
+        </form>  
+
+    </nav>
+    <main>
+    
+        <h2>{{ .Location }}</h2>
+        <iframe src="{{.MapLink}}"></iframe>
+        <h3>Pokemons Found in this {{.Location}}:</h3>
+        <div class="grid-card">
+            {{ range .PokemonList }}
+            <a href="/pokemon?id={{.ID}}">
+                <section class="card" type="submit" name="" value={{.Name}}>
+                    <section class="img-card">
+                        <img src="{{.Image}}" alt="logo-text">
+                    </section>
+                    <section class="text-card">
+                        <h2>{{.Name}}</h2>
+                        <p>{{.Description}}</p>
+                    </section>
+                </section>
+            </a>
+            {{ end }}
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Ecole Pokemon, Projet par Christian Ngono Abanda, Campus ynov</p>
+    </footer>
+</body>
+</html>
