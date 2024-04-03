@@ -54,11 +54,10 @@ func LocationToPokemons(location string, pokemonList []Pokemon) []Pokemon {
 }
 
 func GetMapLink(location string) string {
-	States := []string{"Alabama", "Alaska", "Arizona", " California", " Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", " Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan"}
+	States := []string{"kanto", "johto", "hoenn", "sinnoh", "unys", "kalos", "alola", "galar", "Paldea"}
 	if slices.Contains(States, location) {
 		return maplink1 + location + maplink2 + "6" + maplink3
 	} else {
 		return maplink1 + location + maplink2 + "10" + maplink3
 	}
-
 }
