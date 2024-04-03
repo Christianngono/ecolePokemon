@@ -15,6 +15,9 @@ type Pokemon struct {
 	ID             int     `json:"id"`
 	Pokemon        string  `json:"pokemon"`
 	CreationDate   int     `json:"creationDate"`
+	DatesLink      string  `json:"url"`
+	EvolutionsLink string  `json:"urlEvolution"`
+	GenerationLink string  `json:"urlGeneration"`
 	Height         float64 `json:"height"`
 	Weight         float64 `json:"weight"`
 	BaseExperience int     `json:"base_experience"`
@@ -48,6 +51,10 @@ type Dates struct {
 	DatesName string `json:"datesname"`
 }
 
+type Date struct {
+	Dates []string `json:"dates"`
+}
+
 type Location struct {
 	Contry      string    `json:"contry"`
 	City        string    `json:"city"`
@@ -77,6 +84,12 @@ type DatePage struct {
 	// Info shown in the date page
 	Date        string    `json:"date"`
 	PokemonList []Pokemon `json:"pokemonList"`
+}
+
+type InfoPage struct {
+	Location Id string
+	LocationName string
+	Dates []Dates
 }
 
 type Language struct {
