@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokemon Details</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/pokemon.css">
 </head>
 <body>
     <header>
-        <h1>Pokemon Details</h1>
+        <a class="image" href="/"><img src="/static/image/ecolePokemon.png" alt="logo"></a>   
     </header>
     
-    <main>
-        <section class="pokemon-details">
+    <main class="container">
+        <section class="box">
             <h2>{{.Name}}</h2>
             <p>ID: {{.ID}}</p>
             <p>Type: {{.Pokemon}}</p>
@@ -25,9 +25,6 @@
                 <li>{{.Ability.Name}} (Slot: {{.Slot}}, Hidden: {{.IsHidden}})</li>
                 {{end}}
             </ul>
-            <h3>Sprites</h3>
-            <img src="{{.Sprites.FrontDefault}}" alt="Front Sprite">
-            <img src="{{.Sprites.BackDefault}}" alt="Back Sprite">
             <h3>Stats</h3>
             <ul>
                 {{range .Stats}}
