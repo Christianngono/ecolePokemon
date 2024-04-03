@@ -11,7 +11,7 @@ import (
 func GetAllPokemons() []Pokemon {
 	var pokemonList []Pokemon
 
-	response, err := http.Get(url + "/pokemon") // calls the /pokemon section of the API
+	response, err := http.Get(url + "/pokemons") // calls the /pokemon section of the API
 	if err != nil {
 		fmt.Println("Error HTTP in GetAllPokemons :", err)
 		return nil
