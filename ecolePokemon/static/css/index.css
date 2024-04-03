@@ -1,0 +1,95 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #f00; /* Change this color according to your design */
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.sort {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.submit {
+    padding: 5px 10px;
+    background-color: #f00; /* Change this color according to your design */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit:hover {
+    background-color: #ff5555; /* Change this color according to your design */
+}
+
+main {
+    padding: 20px;
+}
+
+.grid-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Increase size on hover */
+}
+
+.img-card img {
+    width: 100%;
+    height: auto;
+}
+
+.text-card {
+    padding: 10px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+footer:hover {
+    background-color: #555; /* Change this color according to your design */
+}
