@@ -49,7 +49,7 @@ func EvolutionsToPokemons(evolution string, pokemonList []Pokemon) []Pokemon {
     return sortedPokemonList
 }
 
-Get EvolutionLink(evolution string) string {
+GetEvolutionLink(evolution string) string {
 	var url string
     if slices.Contains(evolutions, evolution) {
 		return urlEvolution1 + evolution + urlEvolution2 + "6" urlEvolution3	
