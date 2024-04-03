@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Details</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Pokemon Details</h1>
+    </header>
+    
+    <main>
+        <section class="pokemon-details">
+            <h2>{{.Name}}</h2>
+            <p>ID: {{.ID}}</p>
+            <p>Type: {{.Pokemon}}</p>
+            <p>Height: {{.Height}}m</p>
+            <p>Weight: {{.Weight}}kg</p>
+            <p>Base Experience: {{.BaseExperience}}</p>
+            <h3>Abilities</h3>
+            <ul>
+                {{range .Abilities}}
+                <li>{{.Ability.Name}} (Slot: {{.Slot}}, Hidden: {{.IsHidden}})</li>
+                {{end}}
+            </ul>
+            <h3>Sprites</h3>
+            <img src="{{.Sprites.FrontDefault}}" alt="Front Sprite">
+            <img src="{{.Sprites.BackDefault}}" alt="Back Sprite">
+            <h3>Stats</h3>
+            <ul>
+                {{range .Stats}}
+                <li>{{.Stat.Name}}: {{.BaseStat}}</li>
+                {{end}}
+            </ul>
+            <h3>Moves</h3>
+            <ul>
+                {{range .Moves}}
+                <li>{{.Move.Name}}</li>
+                {{end}}
+            </ul>
+        </section>
+    </main>
+    
+    <footer>
+        <p>© 2024 Ecole Pokemon, Projet par Christian Ngono Abanda, Campus ynov</p>
+    </footer>
+</body>
+</html>
