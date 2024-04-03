@@ -1,25 +1,22 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
-	"html/template"
 	"net/http"
+	"slices"
+	"strconv"
+	"text/template"
 
-	"github.com/gorilla/mux"
+	"github.com/Christianngono/ecolePokemon"
 )
 
 type Pokemon struct {
-	Name  string `json:"name"`
-	ID    int    `json:"id"`
-	Types []struct {
-		Type struct {
-			Name string `json:"name"`
-		} `json:"type"`
-	} `json:"types"`
-	Height         float64 `json:"height(m)"`
-	Weight         float64 `json:"weight(kg)"`
+	Name           string  `json:"name"`
+	ID             int     `json:"id"`
+	Pokemon        string  `json:"pokemon"`
+	CreationDate   int     `json:"creationDate"`
+	Height         float64 `json:"height"`
+	Weight         float64 `json:"weight"`
 	BaseExperience int     `json:"base_experience"`
 	Abilities      []struct {
 		Ability struct {
@@ -30,11 +27,7 @@ type Pokemon struct {
 	} `json:"abilities"`
 	Sprites struct {
 		FrontDefault string `json:"front_default"`
-		FrontShiny   string `json:"front_shiny"`
 		BackDefault  string `json:"back_default"`
-		BackShiny    string `json:"back_shiny"`
-		// Add more image fields or sprites
-
 	} `json:"sprites"`
 	Stats []struct {
 		Stat struct {
@@ -46,91 +39,216 @@ type Pokemon struct {
 		Move struct {
 			Name string `json:"name"`
 		} `json:"move"`
-		// Add more movement fields here if needed (e.g., "version_group_details")
-
 	} `json:"moves"`
-	// Add other fields like capacities, types, and evolutions as necessary
 }
 
+type Dates struct {
+	// Dates located in Relation info
+	DatesId   string `json:"datesid"`
+	DatesName string `json:"datesname"`
+}
+
+type Location struct {
+	Contry      string    `json:"contry"`
+	City        string    `json:"city"`
+	Locations   []string  `json:"locations"`
+	MapLink     string    `json:"maplink"`
+	PokemonList []Pokemon `json:"pokemonList"`
+	Location    string    `json:"location"`
+}
+
+type Evolution struct {
+	Evolutions   []string  `json:"evolutions"`
+	PokemonList  []Pokemon `json:"pokemonList"`
+	UrlEvolution string    `json:"urlEvolution"`
+	Evolution    string    `json:"evolution"`
+	EvolutionID  string    `json:"evolutionID"`
+}
+
+type Generation struct {
+	Generations    []string  `json:"generations"`
+	PokemonList    []Pokemon `json:"pokemonList"`
+	UrlGenerations string    `json:"urlGenerations"`
+	Genreration    string    `json:"generation"`
+	GenerationID   string    `json:"generationID"`
+}
+
+type DatePage struct {
+	// Info shown in the date page
+	Date        string    `json:"date"`
+	PokemonList []Pokemon `json:"pokemonList"`
+}
+
+type Language struct {
+	Languages   []string  `json:"languages"`
+	PokemonList []Pokemon `json:"pokemonList"`
+	LanguageID  string    `json:"language"`
+	Language    string    `json:"language"`
+}
+
+const (
+	url            = "https://pokeapi.co/api/v2/pokemon/ditto"
+	urlEvolution   = "https://pokeapi.co/api/v2/evolution-chain/{id}/"
+	urlGenerations = "https://pokeapi.co/api/v2/generation/{id or name}/"
+
+	maplink = "https://pokeapi.co/api/v2/location/{id or name}/"
+)
+
 func main() {
-
-	r := mux.NewRouter()
-	// Pages
-	r.HandleFunc("/index", HomeHandler)
-	r.HandleFunc("/pokemon/{name}", pokemonHandler)
-	r.HandleFunc("/api/pokemon{name}", apiPokemonHandler)
-
-	http.Handle("/", r)
-	fmt.Println("Server running on port 8080")
+	fmt.Println("Server successfully started at http://localhost:8080")
+	fileServer := http.fileServer(http.Dir("static"))                 // set path to static files (images and css file)
+	http.handle("/static/", http.StripPrefix("/static/", fileServer)) // connects the static files to the server
+	http.HandleFunc("/index", HomeHandler)
+	http.HandleFunc("/pokemon", PokemonHandler)
+	http.HandleFunc("/location", LocationHandler)
+	http.HandleFunc("/datepage", DatePageHandler)
+	http.HandleFunc("/evolution", EvolutionHandler)
+	http.HandleFunc("/generation", GenerationHandler)
+	http.HandleFunc("/language", LanguageHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome on ecolePokemon!")
+	var frontend = template.Must(template.ParseFiles("template/index.html"))
+	var pokemonList = ecolePokemon.GetAllPokemons()
+	search := r.FormValue("search")
+	sort := r.FormValue("sort")
+
+	searchedPokemonList := ecolePokemon.SearchPokemons(search, pokemonList)
+	if len(searchedPokemonList) == 0 {
+		searchedPokemonList = ecolePokemon.TypeToPokemons(search, pokemonList)
+	}
+
+	if len(searchedPokemonList) != 0 {
+		pokemonList = searchedPokemonList
+	}
+
+	if sort == "A > Z" {
+		pokemonList = ecolePokemon.SortPokemon(pokemonList)
+	} else if sort == "Z > A" {
+		pokemonList = ecolePokemon.SortPokemon(pokemonList)
+		slices.Reverse(pokemonList)
+	} else if sort == "Old > New" {
+		pokemonList = ecolePokemon.SortCreationDate(pokemonList)
+	} else if sort == "New > Old" {
+		pokemonList = ecolePokemon.SortCreationDate(pokemonList)
+		slices.Reverse(pokemonList)
+	}
+
+	frontend.Execute(w, pokemonList) // send all info to  webpage
 }
 
-func pokemonHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	pokemonName := vars["name"]
-	pokemon, err := fetchPokemonDetails(pokemonName)
-	if err != nil {
-		errorHandler(w, "Error fetching Pokemon Details")
-		return
-	}
-	renderTemplate(w, "pokemonDetails.html", pokemon)
+func PokemonHandler(w http.ResponseWriter, r *http.Request) {
+	var frontend = template.Must(template.ParseFiles("template/pokemon.html")) // connects template to html webpage
+	pokemonID, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	pokemon := ecolePokemon.GetPokemon(pokemonID)
+	frontend.Execute(w, pokemon)
 }
 
-func apiPokemonHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	pokemonName := vars["name"]
-	pokemon, err := fetchPokemonDetails(pokemonName)
-	if err != nil {
-		http.Error(w, "Failed retrieving Pokémon list", 400)
-		return
+func LocationHandler(w http.ResponseWriter, r *http.Request) {
+	var frontend = template.Must(template.ParseFiles("template/location.html"))
+	var pokemonList = ecolePokemon.GetAllPokemons()
+
+	location := r.URL.Query().Get("city_country")
+	pokemonList = ecolePokemon.LocationToPokemons(location, pokemonList)
+
+	search := r.FormValue("search")
+	sort := r.FormValue("sort")
+
+	searchedPokemonList := ecolePokemon.SearchPokemons(search, pokemonList)
+	if len(searchedPokemonList) == 0 {
+		searchedPokemonList = ecolePokemon.LocationToPokemons(search, pokemonList)
 	}
-	json.NewEncoder(w).Encode(pokemon)
+
+	if len(searchedPokemonList) == 0 {
+		searchedPokemonList = ecolePokemon.DatesToPokemons(search, pokemonList)
+	}
+
+	if len(searchedPokemonList) != 0 {
+		pokemonList = searchedPokemonList
+	}
+
+	if sort == "A > Z" {
+		pokemonList = ecolePokemon.SortPokemon(pokemonList)
+	} else if sort == "Z > A" {
+		pokemonList = ecolePokemon.SortPokemon(pokemonList)
+		slices.Reverse(pokemonList)
+	} else if sort == "Old > New" {
+		pokemonList = ecolePokemon.SortCreationDate(pokemonList)
+	} else if sort == "New > Old" {
+		pokemonList = ecolePokemon.SortCreationDate(pokemonList)
+		slices.Reverse(pokemonList)
+	}
+
+	pageInfo := ecolePokemon.LocationHandler{
+		Location:    ecolePokemon.FormatLocation(location),
+		Maplink:     ecolePokemon.GetMapLink(location),
+		PokemonList: pokemonList,
+	}
+	frontend.Execute(w, pageInfo)
 }
-func fetchPokemonDetails(name string) (*Pokemon, error) {
-	BaseURL := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%s", name)
-	res, err := http.Get(BaseURL)
-	if err != nil || res.StatusCode != 200 {
-		return nil, errors.New("failed getting pokemon details")
+
+func DatePageHandler(w http.ResponseWriter, r *http.Request) {
+	var frontend = template.Must(template.ParseFiles("template/date.html")) // connects template to html webpage
+	var pokemonList = ecolePokemon.GetAllPokemons()
+
+	date := r.URL.Query().Get("date") // get the date's location
+
+	pokemonList = ecolePokemon.DatesToPokemons(date, pokemonList)
+
+	search := r.FormValue("search") // take the user input from the form element in the webpage
+	sort := r.FormValue("sort")     // take the user input from the form element in the webpage
+
+	searchedPokemonList := ecolePokemon.SearchPokemons(search, pokemonList)
+	if len(searchedPokemonList) == 0 {
+		searchedPokemonList = ecolePokemon.LocationsToPokemons(search, pokemonList)
 	}
 
-	defer res.Body.Close()
-	var pokemon Pokemon
-	if err := json.NewDecoder(res.Body).Decode(&pokemon); err != nil {
-		return nil, errors.New("error decoding JSON")
+	if len(searchedPokemonList) == 0 {
+		searchedPokemonList = ecolePokemon.DatesToPokemons(search, pokemonList)
 	}
-	return &pokemon, nil
+
+	if len(searchedPokemonList) != 0 {
+		pokemonList = searchedPokemonList
+	}
+
+	if sort == "A > Z" {
+		pokemonList = ecolePokemon.SortPokemon(pokemonList)
+	} else if sort == "Z > A" {
+		pokemonList = ecolePokemon.SortPokemon(pokemonList)
+		slices.Reverse(pokemonList)
+	} else if sort == "Old > New" {
+		pokemonList = ecolePokemon.SortCreationDate(pokemonList)
+	} else if sort == "New > Old" {
+		pokemonList = ecolePokemon.SortCreationDate(pokemonList)
+		slices.Reverse(pokemonList)
+	}
+
+	pageInfo := ecolePokemon.DatePage{
+		Date:            ecolePokemon.FormatDate(date),
+		PokemonListList: pokemonList,
+	}
+
+	frontend.Execute(w, pageInfo) // send all info to webpage
 }
 
-// Error handler for the application
-func errorHandler(w http.ResponseWriter, message string) {
-	t, err := template.ParseFiles("templates/error.html")
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-	err = t.Execute(w, map[string]interface{}{"Message": message})
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+func EvolutionHandler(w http.ResponseWriter, r *http.Request) {
+	var frontend = template.Must(template.ParseFiles("template/evolution.html"))
+	evolutionID, _ := stconv.Atoi(r.URL.Query().Get("id"))
+	evolution := ecolePokemon.GetEvolution(evolutionID)
+	fronted.Execute(w, evolution)
 }
 
-func renderTemplate(w http.ResponseWriter, tmpl string, data interface{}) {
-	t, err := template.ParseFiles("templates/" + tmpl + ".html")
-	if err != nil {
-		http.Error(w, "Error loading template.", http.StatusInternalServerError)
-		errorHandler(w, "Error loading template.")
-		return
-	}
-	err = t.Execute(w, data)
-	if err != nil {
-		http.Error(w, "Failed to execute template.", http.StatusInternalServerError)
-		errorHandler(w, "Failed to execute template.")
-		return
-	}
+func GenerationHandler(w http.ResponseWriter, r *http.Request) {
+	var frontend = template.Must(template.ParseFile("template/generation.html"))
+	generationID, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	generation := ecolePokemon.GetGeneration(generationID)
+	frontend.Execute(w, generation)
+}
 
+func LanguageHandler(w http.ResponseWriter, r *http.Request) {
+	var fontend = template.Must(template.ParseFile("template/language.html"))
+	languageID, _ := strconv.Atoi(r.URL.Query().Get("id"))
+	language := ecolePokemon.GetLanguage(languageID)
+	frontend.Execute(w, language)
 }
