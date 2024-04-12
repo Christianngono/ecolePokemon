@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-func sortPokemon(pokemonList []Pokemon) []Pokemon {
-	var sortedPokemonList []Pokemon
+func sortPokemons(pokemonList []string) []string {
+	var sortedPokemonList []string
 
 	for _, pokemon := range pokemonList {
 		var isLast = true
@@ -14,7 +14,7 @@ func sortPokemon(pokemonList []Pokemon) []Pokemon {
 			sortedPokemonList = append(sortedPokemonList, pokemon)
 		} else {
 			for i, sortedPokemon := range sortedPokemonList {
-				if pokemon.Name <= sortedPokemon.Name {
+				if pokemon <= sortedPokemon {
 					sortedPokemonList = slices.Insert(sortedPokemonList, i, pokemon)
 					isLast = false
 					break
@@ -24,12 +24,12 @@ func sortPokemon(pokemonList []Pokemon) []Pokemon {
                 sortedPokemonList = append(sortedPokemonList, pokemon)
             }
 		}
-	}
+	} 
 	return sortedPokemonList
 }
 
-func sortCreationDate(pokemonList []Pokemon) []Pokemon {
-	var sortedPokemonList []Pokemon
+func sortCreationDate(pokemonList []string) []string {
+	var sortedPokemonList []string
 
     for _, pokemon := range pokemonList {
         var isLast = true
@@ -37,7 +37,7 @@ func sortCreationDate(pokemonList []Pokemon) []Pokemon {
             sortedPokemonList = append(sortedPokemonList, pokemon)
         } else {
             for i, sortedPokemon := range sortedPokemonList {
-                if pokemon.CreationDate <= sortedPokemon.CreationDate {
+                if pokemon <= sortedPokemon {
                     sortedPokemonList = slices.Insert(sortedPokemonList, i, pokemon)
                     isLast = false
                     break
@@ -47,15 +47,15 @@ func sortCreationDate(pokemonList []Pokemon) []Pokemon {
                 sortedPokemonList = append(sortedPokemonList, pokemon)
             }
         }
-    }
+    } 
     return sortedPokemonList
 }
 
-func SearchPokemons(search string, pokemonList []Pokemon) []Pokemon {
-	var searchedPokemonList []Pokemon
+func SearchPokemons(input string, pokemonList []string) []string {
+	var searchedPokemonList []string
 
     for _, pokemon := range pokemonList {
-        if strings.Contains(strings.ToLower(pokemon.Name), strings.ToLower(strings.TrimSpace(input))) {
+        if strings.Contains(strings.ToLower(pokemon), strings.ToLower(strings.TrimSpace(input))) {
             searchedPokemonList = append(searchedPokemonList, pokemon)
         }
     }
