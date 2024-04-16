@@ -1,7 +1,2 @@
-# Ignorer les fichiers liés aux modules Go
-go.mod
-go.sum
-
-# Ignorer les fichiers spécifiques à la version 1.23
-1.23/
-1.23.*
+# Ignorer les programmes et fichiers:
+.deno_lsp/
