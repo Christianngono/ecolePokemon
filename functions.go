@@ -1,31 +1,31 @@
 package ecolePokemon
 
 import (
-	"slices"
+
 	"strings"
 )
 
-func SortPokemons(pokemonList []string) []string {
-	var sortedPokemonList []string
+func SortAllPokemons(pokemons []string) []string {
+	var sortedPokemons []string
 
-	for _, pokemon := range pokemonList {
+	for _, pokemon := range pokemons {
 		var isLast = true
-		if len(sortedPokemonList) == 0 {
-			sortedPokemonList = append(sortedPokemonList, pokemon)
+		if len(sortedPokemons) == 0 {
+			sortedPokemons = append(sortedPokemons, pokemon)
 		} else {
-			for i, sortedPokemon := range sortedPokemonList {
+			for i, sortedPokemon := range sortedPokemons {
 				if pokemon <= sortedPokemon {
-					sortedPokemonList = slices.Insert(sortedPokemonList, i, pokemon)
+					sortedPokemons = Insert(sortedPokemons, i, pokemon)
 					isLast = false
 					break
 				}
 			}
 			if isLast {
-				sortedPokemonList = append(sortedPokemonList, pokemon)
+				sortedPokemons = append(sortedPokemons, pokemon)
 			}
 		}
 	}
-	return sortedPokemonList
+	return sortedPokemons
 }
 
 func SortRegions(regionsMap map[string]string) map[string]string {
@@ -49,41 +49,18 @@ func SortRegions(regionsMap map[string]string) map[string]string {
     return sortedRegionsMap
 }
 
+func SearchPokemons(input string, pokemons []string) []string {
+	var searchedPokemons []string
 
-
-func SortVersions(pokemonForm []string) []string {
-	var sortedPokemonList []string
-
-	for _, pokemon := range pokemonForm {
-		var isLast = true
-		if len(sortedPokemonList) == 0 {
-			sortedPokemonList = append(sortedPokemonList, pokemon)
-		} else {
-			for i, sortedPokemon := range sortedPokemonList {
-				if pokemon <= sortedPokemon {
-					sortedPokemonList = slices.Insert(sortedPokemonList, i, pokemon)
-					isLast = false
-					break
-				}
-			}
-			if isLast {
-				sortedPokemonList = append(sortedPokemonList, pokemon)
-			}
-		}
-	}
-	return sortedPokemonList
-}
-
-func SearchPokemons(input string, pokemonList []string) []string {
-	var searchedPokemonList []string
-
-	for _, pokemon := range pokemonList {
+	for _, pokemon := range pokemons {
 		if strings.Contains(strings.ToLower(pokemon), strings.ToLower(strings.TrimSpace(input))) {
-			searchedPokemonList = append(searchedPokemonList, pokemon)
+			searchedPokemons = append(searchedPokemons, pokemon)
 		}
 	}
-	return searchedPokemonList
+	return searchedPokemons
 }
+
+
 
 func SortStrings(strs []string) []string {
 	for i := 0; i < len(strs); i++ {
