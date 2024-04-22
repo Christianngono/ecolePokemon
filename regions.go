@@ -9,7 +9,7 @@ import (
 )
 
 // RegionToPokemons trouve les pokemons associés à une région donnée
-func RegionToPokemons(region string, pokemonForm []string) map[string][]string {
+func RegionToPokemons(region string, Pokemons []string) map[string][]string {
 
 	// Carte de correspondance entre les régions et les pokemons
 	regionsMap := map[string][]string{
