@@ -3,74 +3,64 @@ package ecolePokemon
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"strconv"
 )
 
-const url = "https://pokeapi.co/api/v2/pokemon/ditto"
+const url = "https://pokebuildapi.fr/api/v1/pokemon/"
 
-func GetAllPokemons() []string {
-	var pokemonList []string
+type PokemonResponse struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Image    string `json:"image"`
+	ApiTypes []ApiType `json:"apiTypes"`
+	Stats    Stats `json:"stats"`
 
-
-	response, err := http.Get(url + "/pokemons") // calls the /pokemon section of the API
-	if err != nil {
-		fmt.Println("Error HTTP in GetAllPokemons :", err)
-		return nil
-	}
-
-	defer response.Body.Close()
-	body, err := io.ReadAll(response.Body) // Read the response
-	if err != nil {
-		fmt.Println("Reading Error in GetAllPokemons :", err)
-		return nil
-	}
-
-	err3 := json.Unmarshal(body, &pokemonList)
-	if err3 != nil {
-		fmt.Println("Error Unmarshal in GetAllPokemons :", err3)
-		return nil
-	}
-
-	return pokemonList
+	// Ajoutez d'autres champs selon vos besoins
 }
 
-func GetPokemon(id int) string {
-
-	var pokemon string
-
-	response, err := http.Get(url + "/pokemons/" + strconv.Itoa(id))
-	if err != nil {
-		fmt.Println("Error HTTP in GetPokemon:", err)
-		return pokemon
-	}
-
-	defer response.Body.Close()
-	body, err2 := io.ReadAll(response.Body)
-	if err2 != nil {
-		fmt.Println("Reading Error in GetPokemon:", err2)
-		return pokemon
-	}
-
-	err3 := json.Unmarshal(body, &pokemon)
-	if err3 != nil {
-		fmt.Println("Error Unmarshal in GetPokemon:", err3)
-		return pokemon
-	}
-	return pokemon
+type Stats struct {
+	HP int `json:"hp"`
+	Attack int `json:"attack"`
+	Defense int `json:"defense"`
+	SpecialAttack int `json:"specialAttack"`
+	SpecialDefense int `json:"specialDefense"`
+	Speed int `json:"speed"`
 }
 
-func NametoPokemon(name string) string {
-	pokemonList := GetAllPokemons()
+type ApiType struct {
+	Name string `json:"name"`
+	Image string `json:"image"`
+}
 
-	for _, pokemon := range pokemonList {
-		if pokemon == name {
-			return pokemon
-		}
+func GetAllPokemons() ([]PokemonResponse, error) {
+	var pokemons []PokemonResponse
+	resp, err := http.Get(url)
+	if err!= nil {
+        return pokemons, err
+    }
+	defer resp.Body.Close()
+	if resp.StatusCode!= http.StatusOK {
+        return pokemons, fmt.Errorf("erreur lors de la récupération de la liste des Pokémons")
+    }
+
+	if err := json.NewDecoder(resp.Body).Decode(&pokemons); err != nil {
+		return pokemons, err
 	}
+	
+	return pokemons, nil	
+}
 
-	var error string // If no pokemon fonud
-	fmt.Println("Error, name not found")
-	return error
+func GetPokemon(id string) (PokemonResponse, error) {
+	var pokemon PokemonResponse
+
+	response, err := http.Get(url + id)
+	if err != nil {
+		return pokemon, err
+	}
+	defer response.Body.Close()
+
+	if err := json.NewDecoder(response.Body).Decode(&pokemon); err != nil {
+		return pokemon, err
+	}
+	return pokemon, nil
 }
