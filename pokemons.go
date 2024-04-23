@@ -32,6 +32,7 @@ type ApiType struct {
 	Image string `json:"image"`
 }
 
+
 func GetAllPokemons() ([]PokemonResponse, error) {
 	var pokemons []PokemonResponse
 	resp, err := http.Get(url)
@@ -63,4 +64,19 @@ func GetPokemon(id string) (PokemonResponse, error) {
 		return pokemon, err
 	}
 	return pokemon, nil
+}
+
+func GetPokemonByName(name string) (PokemonResponse, error) {
+	var pokemon PokemonResponse
+
+    response, err := http.Get(url + name)
+    if err != nil {
+        return pokemon, err
+    }
+    defer response.Body.Close()
+
+    if err := json.NewDecoder(response.Body).Decode(&pokemon); err != nil {
+        return pokemon, err
+    }
+    return pokemon, nil
 }
