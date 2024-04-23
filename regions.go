@@ -3,9 +3,8 @@ package ecolePokemon
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"strconv"	
+
 )
 
 // RegionToPokemons trouve les pokemons associés à une région donnée
@@ -47,27 +46,37 @@ func RegionToPokemons(region string, Pokemons []string) map[string][]string {
 
 const urlRegion = "https://pokeapi.co/api/v2/region/"
 
-func GetRegions(id int)string {
-	var region string
-
-	response, err := http.Get(urlRegion + strconv.Itoa(id))
-	if err != nil {
-		fmt.Println("Erreur HTTP lors de la récupération de la région :", err)
-		return region
-	}
-
-	defer response.Body.Close()
-	body, err := io.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println("Erreur de lecture lors de la récupération de la région :", err)
-		return region
-	}
-
-	err = json.Unmarshal(body, &region)
-	if err != nil {
-		fmt.Println("Erreur de désérialisation JSON lors de la récupération de la région :", err)
-		return region
-	}
-
-	return region	
+func GetRegions()([]string, error) {
+	var regions []string
+	resp, err := http.Get(urlRegion)
+	if err!= nil {
+        return regions, err
+    }
+	defer resp.Body.Close()
+	if resp.StatusCode!= http.StatusOK {
+        return regions, fmt.Errorf("erreur lors de la récupération de la liste des régions")
+    }
+	if err := json.NewDecoder(resp.Body).Decode(&regions); err != nil {
+        return regions, err
+    }
+	return regions, nil	
 }
+
+func GetRegion(region string) (string, error) {
+	var regionName string
+
+    response, err := http.Get(urlRegion + region)
+    if err != nil {
+        return regionName, err
+    }
+    defer response.Body.Close()
+
+    if err := json.NewDecoder(response.Body).Decode(&regionName); err != nil {
+        return regionName, err
+    }
+    return regionName, nil
+}
+
+
+
+
