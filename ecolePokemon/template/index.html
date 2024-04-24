@@ -4,51 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ecole Pokemon</title>
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="../static/css/index.css">
 </head>
 <body>
     <header>
-        <a class ="image" href="/"><img src="/static/image/pokemon-anime.png" alt="logo"></a>
+        <h1>Welcome to ecolePokemon</h1>
+        <p>Discover and explore the world of Pokémon!</p>
+        <a class="image" href="/"><img src="../static/image/pokemon-anime.png" alt="logo"></a>
     </header>
-    <!----------Navigation----------->
-    <nav>
-        <from class="search-form" action="/" method="post">
-            <input class="search" type="text" placeholder="Search" name="search">
-            <select class="sort" name="sort">
-                <option value="selected">None</option>
-                <optgroup label="Pokemon:">
-                    <option value="A > Z">A > Z</option>
-                    <option value="Z > A">Z > A</option>
-                </optgroup>
-                <optgroup label="Creation date:">
-                    <option value ="Old">New >Old >New</un>
-                    <option value ="New">Old >New >Old</un>
-                </optgroup>
-            </select>
-            <button class="submit" type="submit">Entrer</button>
-        </from>
-    </nav>
     <!----------MAIN---------->
     <main>
         <div class="grid-card">
-            {{range .}}
-            <a href="/pokemon?id={{.ID}}">
-                <section class="card" type="submit" name="" value={{.Name}}>
-                    <section class="img-card">
-                        <img src="{{.Image}}" alt="logo-text">
-                    </section>
-                    <section class="text-card">
-                        <h2>{{.Name}}</h2>
-                        <p>{{.Description}}</p>
-                    </section>
-                </section>   
-            </a>
-            {{end}}
+            <h2>Pokémons</h2>
+            <ul class="list-group">
+                {{range .}}
+                <li class="list-group-item">
+                    <a href="./pokemons?id={{.ID}}">
+                        <section class="card" type="submit" id="{{.ID}}" value="{{.Name}}">
+                            <section class="img-card">
+                                <img src="{{.Image}}" alt="{{.Name}} Sprite">
+                            </section>
+                            <section class="info-card">
+                                <p>ID: {{.ID}}</p>
+                                <p>Name: {{.Name}}</p>
+                            </section>
+                        </section>
+                    </a>
+                </li>
+                {{end}}
+            </ul>
+            <!--Balise img pour afficher l'image du pokémon sélectionné à la page web index -->
+            <img id="selectedPokemonImage" src="" alt="" id="Selected Pokemon Image">    
         </div>
     </main>
     <!----------FOOTER---------->
     <footer>
         <p>© 2024 Ecole Pokemon, Projet par Christian Ngono Abanda, Campus ynov</p>
     </footer>
+    <!-- Script JavaScript pour mettre à jour l'image du Pokémon sélectionné -->
+    <script>
+        // Récupérer le paramètre d'URL "id" pour identifier le Pokémon sélectionné
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedPokemonId = urlParams.get('id');
+        
+        // Mettre à jour l'image du Pokémon sélectionné en utilisant son ID
+        document.getElementById("selectedPokemonImage").src = `https://pokeapi.co/api/v2/pokemon/${selectedPokemonId}.png`;
+    </script>
 </body>
 </html>
