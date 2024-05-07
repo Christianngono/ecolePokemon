@@ -61,7 +61,6 @@ func SortPokemonByName(sortedPokemon []string) []string {
     }
     return sortedPokemons
 }
-
 func SortRegions(regionsMap map[string]string) map[string]string {
 	// Créer une nouvelle carte pour stocker les regions triées
 	var sortedRegionsMap = make(map[string]string)
@@ -94,12 +93,8 @@ func SortRegion(id string) string {
     }
     return sortedRegion   
 }
+
 	
-
-
-
-
-
 func SearchPokemons(input string, pokemons []string) []string {
 	var searchedPokemons []string
 
