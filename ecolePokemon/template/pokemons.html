@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{.Name}}</title>
+    <title>{{.Name}} - Statistiques</title>
     <link rel="stylesheet" href="../static/css/pokemons.css">
 </head>
 <body>
     <div class="container">
-        <h1>Pokémon Form</h1>
+        <h1>Statistiques de {{.Name}}</h1>
         <!-- Affichage de l'image du Pokémon sélectionné depuis l'index.html-->
         <img src="{{.Image}}" alt="{{.Name}} Sprite">
-        <form action="/pokemons" method="GET">
-            <div class="mb-3">
-                <label for="search" class="form-label">Search:</label>
-                <input type="text" class="form-control" id= "search" name="search">
-            </div>
-            <button type="submit" class="btn btn-primary" value="id">Submit</button>
-        </form>
+        <!--Afficher tous les stats d'un Pokémon-->
+        <ul class="stats-list">
+            <li><strong>HP:</strong>{{.Stats.HP}}</li>
+            <li><strong>Attack:</strong>{{.Stats.Attack}}</li>
+            <li><strong>Defense:</strong>{{.Stats.Defense}}</li>
+            <li><strong>Special Attack:</strong>{{.Stats.SpecialAttack}}</li>
+            <li><strong>Special Defense:</strong>{{.Stats.SpecialDefense}}</li>
+            <li><strong>Speed:</strong>{{.Stats.Speed}}</li>
+        </ul>
         <ul class="list-group mt-3">
             {{ range . }}
                 <li class="list-group-item">{{ . }}</li>
             {{ end }}
         </ul>
+        <a href="region.html" class="btn">Region</a>
     </div>
    
 </body>

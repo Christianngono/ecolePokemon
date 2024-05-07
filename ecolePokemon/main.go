@@ -16,7 +16,7 @@ type Pokemon struct {
 	Region    string `json:" region"`
 	Sprites   string `json:"sprites"`
 	Url       string `json:"url"`
-	UrlRegion string `json:"url_region"`
+	UrlRegion string `json:"urlregion"`
 }
 
 // Region représente la structure d'une région
