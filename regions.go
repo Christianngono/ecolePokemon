@@ -7,6 +7,7 @@ import (
 
 )
 
+
 // RegionToPokemons trouve les pokemons associés à une région donnée
 func RegionToPokemons(region string, Pokemons []string) map[string][]string {
 
@@ -42,6 +43,13 @@ func RegionToPokemons(region string, Pokemons []string) map[string][]string {
 
     return regionPokemonMap
 
+}
+
+type Region struct {
+	Name      string   `json:"name"`
+	Regions   []string `json:"regions"`
+	UrlRegion string   `json:"url_region"`
+	Pokemons  []string `json:"pokemons"`
 }
 
 const urlRegion = "https://pokeapi.co/api/v2/region/"
