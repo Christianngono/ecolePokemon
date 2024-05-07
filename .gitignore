@@ -1,9 +1,2 @@
 # Ignorer les programmes et fichiers:
 .deno_lsp/
-.deno_lsp/*
-ecolePokemon/static/css/index.css
-ecolePokemon/static/css/pokemons.css
-ecolePokemon/static/css/region.css
-ecolePokemon/template/index.html
-ecolePokemon/template/pokemons.html
-ecolePokemon/template/region.html
