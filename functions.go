@@ -2,7 +2,6 @@ package ecolePokemon
 
 import (
 	"strings"
-	"sort"
 )
 
 func SortAllPokemons(pokemons []string) []string {
@@ -60,38 +59,6 @@ func SortPokemonByName(sortedPokemon []string) []string {
         }
     }
     return sortedPokemons
-}
-func SortRegions(regionsMap map[string]string) map[string]string {
-	// Créer une nouvelle carte pour stocker les regions triées
-	var sortedRegionsMap = make(map[string]string)
-
-	// Collecter les noms des régions
-	var regions []string
-
-	for region := range regionsMap {
-		regions = append(regions, region)
-	}
-
-	// Trier les noms des régions
-	 sort.Strings(regions)
-
-	// Insérer les régions triées dans la map
-	for _, region := range regions {
-		sortedRegionsMap[region] = regionsMap[region]
-	}
-
-	return sortedRegionsMap
-}
-
-func SortRegion(id string) string {
-	var sortedRegion string
-    for _, letter := range id {
-        sortedRegion = sortedRegion + string(letter)
-        sortedRegion = strings.ToLower(sortedRegion)
-        sortedRegion = SortAllPokemons(strings.Split(sortedRegion, ""))[0]
-        sortedRegion = strings.ToUpper(sortedRegion)
-    }
-    return sortedRegion   
 }
 
 	
