@@ -2,19 +2,28 @@ body {
     font-family: Arial, sans-serif;
     background-color: #1e2535; /* Bleu foncé */
     color: #fff; /* Texte blanc */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Au moins 100% de la hauteur de la fenêtre */
+    overflow-y: scroll; /* Ajout de défilement vertical */
+    scroll-behavior: smooth; /* Ajout d'effet de défilement doux */
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 600px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.1); /* Fond semi-transparent */
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Ombre légère */
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
+    color: #ff8c00; /* Orange */
+    margin-bottom: 20px;
 }
 
 img {
@@ -23,11 +32,17 @@ img {
     max-width: 200px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Ombre légère */
+    transition: transform 0.3s ease; /* Ajout de transition au survol */
+}
+
+img:hover {
+    transform: scale(1.1); /* Effet de zoom au survol */
 }
 
 .stats-list {
     list-style: none;
     padding: 0;
+    margin-bottom: 20px;
 }
 
 .stats-list li {
@@ -59,10 +74,11 @@ ul li:last-child {
 }
 
 ul li a {
-    color: #00bfff; /* Bleu clair */
+    color: #87ceeb; /* Bleu clair */
     text-decoration: none;
+    transition: color 0.3s ease; /* Ajout de transition au survol */
 }
 
 ul li a:hover {
-    text-decoration: underline;
+    color: #00bfff; /* Bleu clair plus vif */
 }
