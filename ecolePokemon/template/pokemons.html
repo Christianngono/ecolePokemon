@@ -20,12 +20,37 @@
             <li><strong>Special Defense:</strong>{{.Stats.SpecialDefense}}</li>
             <li><strong>Speed:</strong>{{.Stats.Speed}}</li>
         </ul>
-        <ul class="list-group mt-3">
-            {{ range . }}
-                <li class="list-group-item">{{ . }}</li>
+        <!-- Affichage des types du Pokémon -->
+        <h2>Types</h2>
+        <ul>
+            {{ range .ApiTypes }}
+                <li>{{ .Name }}</li>
             {{ end }}
         </ul>
-        <a href="region.html" class="btn">Region</a>
+
+        <!-- Affichage des résistances modifiantes d'aptitudes pour les APIs -->
+        <h2>Résistances Modifiantes d'Aptitudes pour les APIs</h2>
+        <ul>
+            {{ range .ResistanceModifyingAbilitiesForApis }}
+                <li>{{ .Name }}</li>
+            {{ end }}
+        </ul>
+
+        <!-- Affichage des générations d'API -->
+        <h2>Générations d'API</h2>
+        <ul>
+            {{ range .ApiGenerations }}
+                <li>{{ .Name }}</li>
+            {{ end }}
+        </ul>
+
+        <!-- Affichage des résistances d'API -->
+        <h2>Résistances d'API</h2>
+        <ul>
+            {{ range .ApiResistances }}
+                <li>{{ .Name }}</li>
+            {{ end }}
+        </ul>   
     </div>
    
 </body>
