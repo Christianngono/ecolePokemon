@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Name}} - Statistiques</title>
-    <link rel="stylesheet" href="../static/css/pokemons.css">
 </head>
 <body>
     <div class="container">
@@ -13,12 +12,12 @@
         <img src="{{.Image}}" alt="{{.Name}} Sprite">
         <!--Afficher tous les stats d'un Pokémon-->
         <ul class="stats-list">
-            <li><strong>HP:</strong>{{.Stats.HP}}</li>
-            <li><strong>Attack:</strong>{{.Stats.Attack}}</li>
-            <li><strong>Defense:</strong>{{.Stats.Defense}}</li>
-            <li><strong>Special Attack:</strong>{{.Stats.SpecialAttack}}</li>
-            <li><strong>Special Defense:</strong>{{.Stats.SpecialDefense}}</li>
-            <li><strong>Speed:</strong>{{.Stats.Speed}}</li>
+            <li><strong>HP:</strong> {{.Stats.HP}}</li>
+            <li><strong>Attack:</strong> {{.Stats.Attack}}</li>
+            <li><strong>Defense:</strong> {{.Stats.Defense}}</li>
+            <li><strong>Special Attack:</strong> {{.Stats.SpecialAttack}}</li>
+            <li><strong>Special Defense:</strong> {{.Stats.SpecialDefense}}</li>
+            <li><strong>Speed:</strong> {{.Stats.Speed}}</li>
         </ul>
         <!-- Affichage des types du Pokémon -->
         <h2>Types</h2>
@@ -40,7 +39,7 @@
         <h2>Générations d'API</h2>
         <ul>
             {{ range .ApiGenerations }}
-                <li>{{ .Name }}</li>
+                <li>{{ .ApiGeneration }}</li>
             {{ end }}
         </ul>
 
@@ -50,8 +49,31 @@
             {{ range .ApiResistances }}
                 <li>{{ .Name }}</li>
             {{ end }}
-        </ul>   
+        </ul>
+
+        <!-- Affichage des évolutions d'API -->
+        <h2>Évolutions d'API</h2>
+        <ul>
+            {{ range .ApiEvolutions }}
+                <li>{{ .Name }}</li>
+            {{ end }}
+        </ul>
+
+        <!-- Affichage des pré-évolutions d'API -->
+        <h2>Pré-Évolutions d'API</h2>
+        <ul>
+            {{ range .ApiPreEvolutions }}
+                <li>{{ .Name }}</li>
+            {{ end }}
+        </ul>
+
+        <!-- Affichage des résistances avec aptitudes d'API -->
+        <h2>Résistances avec Aptitudes d'API</h2>
+        <ul>
+            {{ range .ApiResistancesWithAbilities }}
+                <li>{{ .Name }}</li>
+            {{ end }}
+        </ul>
     </div>
-   
 </body>
 </html>
