@@ -15,7 +15,7 @@ type PokemonResponse struct {
 	ApiTypes []ApiType `json:"apiTypes"`
 	Stats    Stats `json:"stats"`
 	ResistanceModifyingAbilitiesForApis []ResistanceModifyingAbilitiesForApi `json:"resistanceModifyingAbilitiesForApis"`
-	ApiGenerations  []int `json:"apiGenerations"`
+	ApiGenerations []ApiGeneration `json:"apiGenerations"`
 	ApiResistances []ApiResistance `json:"apiResistances"`
     ApiEvolutions []ApiEvolution `json:"apiEvolutions"`
     ApiPreEvolutions []ApiPreEvolution `json:"apiPreEvolutions"`
@@ -43,12 +43,12 @@ type ResistanceModifyingAbilitiesForApi struct {
 }
 
 type ApiGeneration struct {
-    ApiGeneration int `json:"apiGeneration" ` 
+    Id int `json:"id"`
 }
-
 
 type ApiResistance struct {
 	Name string `json:"name"`
+    Image string `json:"image"`
 	DamageMultiplier float64 `json:"damage_multipliers"`
 	DamageRelation string `json:"damage_relation"`
 }
@@ -181,6 +181,24 @@ func GetPokemonResistanceModifyingAbilitiesForApisByName(name string) (PokemonRe
     }
     return pokemon, nil
 }
+
+func GetAllPokemonsApiGenerations()([]PokemonResponse, error) {
+    var pokemons []PokemonResponse
+    resp, err := http.Get(url)
+    if err!= nil {
+        return pokemons, err
+    }
+    defer resp.Body.Close()
+    if resp.StatusCode!= http.StatusOK {
+        return pokemons, fmt.Errorf("erreur lors de la récupération de la liste des Pokémons")
+    }
+
+    if err := json.NewDecoder(resp.Body).Decode(&pokemons); err != nil {
+        return pokemons, err
+    }
+    return pokemons, nil
+}
+
 func GetPokemonApiGeneration(name string) (PokemonResponse, error) {
 	var pokemon PokemonResponse
 
