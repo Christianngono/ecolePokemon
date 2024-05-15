@@ -18,10 +18,6 @@ type Pokemon struct {
 	UrlRegion string `json:"urlregion"`
 }
 
-const (
-	UrlRegion = "https://pokeapi.co/api/v2/region/"
-)
-
 func main() {
 	fmt.Println("Server successfully started at http://localhost:8080")
 	fileServer := http.FileServer(http.Dir("static")) // Utilisation d'un chemin relatif pour les fichiers statiques
