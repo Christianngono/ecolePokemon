@@ -15,7 +15,7 @@ type PokemonResponse struct {
 	ApiTypes []ApiType `json:"apiTypes"`
 	Stats    Stats `json:"stats"`
 	ResistanceModifyingAbilitiesForApis []ResistanceModifyingAbilitiesForApi `json:"resistanceModifyingAbilitiesForApis"`
-	ApiGenerations []ApiGeneration `json:"apiGenerations"`
+	ApiGenerations []int `json:"apiGenerations"`
 	ApiResistances []ApiResistance `json:"apiResistances"`
     ApiEvolutions []ApiEvolution `json:"apiEvolutions"`
     ApiPreEvolutions []ApiPreEvolution `json:"apiPreEvolutions"`
