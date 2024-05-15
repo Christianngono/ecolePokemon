@@ -26,11 +26,17 @@ func main() {
 	fmt.Println("Server successfully started at http://localhost:8080")
 	fileServer := http.FileServer(http.Dir("static")) // Utilisation d'un chemin relatif pour les fichiers statiques
 	http.Handle("/static/", http.StripPrefix("/static", fileServer))
+	http.HandleFunc("/", RedirectToIndex)
 	http.HandleFunc("/index", HomeHandler)
 	http.HandleFunc("/pokemons", PokemonHandler)
 
 	http.ListenAndServe(":8080", nil)
 }
+
+func RedirectToIndex(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/index", http.StatusSeeOther)
+}
+
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	pokemons, err := ecolePokemon.GetAllPokemons()
